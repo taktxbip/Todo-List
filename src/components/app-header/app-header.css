@@ -1,0 +1,12 @@
+.app-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: baseline;
+	margin-bottom: 20px;
+}
+
+.app-header-status {
+	font-size: 14px;
+	color: grey;
+}

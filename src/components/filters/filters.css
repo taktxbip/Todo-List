@@ -1,0 +1,24 @@
+.filters {
+	width: 30%;
+	text-align: right;
+}
+
+.filters button {
+	margin-left: -1px;
+}
+
+.filters .btn-info {
+	z-index: 10;
+}
+
+.filters button:nth-child(1) {
+	border-radius: .25rem 0 0 .25rem;
+}
+
+.filters button:nth-child(2) {
+	border-radius: 0;
+}
+
+.filters button:nth-child(3) {
+	border-radius: 0 .25rem .25rem 0;
+}
