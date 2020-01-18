@@ -16,6 +16,7 @@ export default class App extends Component {
 			label: label,
 			important: false,
 			done: false,
+			visible: true,
 			id: 'el' + this.maxId++
 		};
 	}
@@ -26,7 +27,8 @@ export default class App extends Component {
       this.createToDoItem('Write App'),
       this.createToDoItem('Enjoy'),
       this.createToDoItem('Sleep')
-		]
+		],
+		setFilter: 'Important'
   };
 
   removeItem = id => {
@@ -71,6 +73,27 @@ export default class App extends Component {
 		});
 	}
 	
+	onTabChange = (tabName) => {
+		this.setState({
+				setFilter: tabName
+		});
+		console.log(tabName);		
+	}
+
+	onFilter = (string) => {
+		this.setState(( { todoData } ) => {
+			let newArray = [];
+			todoData.forEach( (el) => {
+				if ( el.label.search(string) === -1 )
+					newArray.push( { ...el, visible: false  } )
+				else 
+					newArray.push( { ...el, visible: true  } )
+			});
+			return {
+				todoData: newArray
+			}
+		});
+	}
 
 	addItem = (text) => {
 		const newEl = this.createToDoItem(text);
@@ -87,15 +110,15 @@ export default class App extends Component {
   };
 
   render() {
-		const { todoData } = this.state;
+		const { todoData, setFilter } = this.state;
 		const countDone = todoData.filter( (el) => el.done ).length;
 		const countTodo = todoData.length - countDone;
     return (
       <div>
         <AppHeader done={ countDone } todo={ countTodo }/>
         <header className="header">
-          <SearchPanel />
-          <Filters />
+          <SearchPanel onFilter={ this.onFilter } />
+          <Filters setFilter={ setFilter } onTab={ this.onTabChange }/>
         </header>
 				<TodoList 
 				todos={todoData} 

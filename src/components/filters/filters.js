@@ -1,17 +1,33 @@
 import React, { Component } from "react";
 import "./filters.css";
 
-
-
 export default class Filters extends Component {
-	render() {
-		return (
-			<div className="filters">
-				<button type="button" className="btn btn-info">All</button>
-				<button type="button" className="btn btn-outline-secondary">Active</button>
-				<button type="button" className="btn btn-outline-secondary">Done</button>
-			</div>
-		);
-	}
-}
+  render() {
+    const { setFilter, onTab } = this.props;
 
+    const setActiveTab = name => {
+      // console.log( setFilter );
+
+
+
+      return (
+        <button
+          type="button"
+          // onClick= { onTab(name) }
+          className={
+            setFilter === name ? "btn btn-info" : "btn btn-outline-secondary"
+          }>
+          {name}
+        </button>
+      );
+    };
+
+    return (
+      <div className="filters">
+        {setActiveTab("All")}
+        {setActiveTab("Important")}
+        {setActiveTab("Done")}
+      </div>
+    );
+  }
+}
