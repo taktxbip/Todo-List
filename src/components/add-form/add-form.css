@@ -1,0 +1,11 @@
+.add-form {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.add-form .btn {
+	width: 150px;
+	margin-left: 10px;
+}
