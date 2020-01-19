@@ -28,7 +28,8 @@ export default class App extends Component {
       this.createToDoItem('Enjoy'),
       this.createToDoItem('Sleep')
 		],
-		setFilter: 'Important'
+		setFilter: 'All',
+		term: ''
   };
 
   removeItem = id => {
@@ -55,7 +56,7 @@ export default class App extends Component {
 			newItem,
 			...arr.slice(idx+1)
 		];
-	}
+	};
 
 	onToggleImportant = (id) => {
 		this.setState(( { todoData } ) => {
@@ -63,7 +64,7 @@ export default class App extends Component {
 				todoData: this.toggleProperty(todoData, id, 'important')
 			}
 		});
-	}
+	};
 	
 	onToggleDone = (id) => {
 		this.setState( ( { todoData } ) => {
@@ -71,29 +72,32 @@ export default class App extends Component {
 				todoData: this.toggleProperty(todoData, id, 'done')
 			}
 		});
-	}
+	};
 	
-	onTabChange = (tabName) => {
+	tabsFilterVisible = (arr, propName) => {
+		let newArray =[];
+		arr.forEach( (el) => {
+			if ( el[propName] === true )
+				newArray.push( {...el, visible: true } );
+			else
+				newArray.push( {...el, visible: false } );
+		});
+		return newArray;
+	};
+
+
+	onToggleTab = (tabName) => {
 		this.setState({
 				setFilter: tabName
 		});
-		console.log(tabName);		
-	}
+	};
 
-	onFilter = (string) => {
-		this.setState(( { todoData } ) => {
-			let newArray = [];
-			todoData.forEach( (el) => {
-				if ( el.label.search(string) === -1 )
-					newArray.push( { ...el, visible: false  } )
-				else 
-					newArray.push( { ...el, visible: true  } )
-			});
-			return {
-				todoData: newArray
-			}
-		});
-	}
+
+	updateTerm = (newTerm) => {
+		this.setState({
+			term: newTerm
+		})
+	};
 
 	addItem = (text) => {
 		const newEl = this.createToDoItem(text);
@@ -107,21 +111,43 @@ export default class App extends Component {
 			}
 		});
 		
-  };
+	};
+	
+	onSearch = (arr, term) => {
+		if ( term.length === '' )
+			return arr;
+
+		return arr.filter( (el) => {
+			return el.label.toLowerCase().search(term.toLowerCase()) !== -1
+		});
+	}
+
+	filter = (arr, activeTab) => {
+		switch (activeTab) {
+			case "All": return arr;
+			case "Done": return arr.filter( (el) => el.done );
+			case "Active": return arr.filter( (el) => !el.done );
+			default: return arr;
+		}
+	}
 
   render() {
-		const { todoData, setFilter } = this.state;
+		const { todoData, setFilter, term } = this.state;
 		const countDone = todoData.filter( (el) => el.done ).length;
 		const countTodo = todoData.length - countDone;
+
+		const dataAfterSearchAndFilter = this.filter(this.onSearch(todoData, term), setFilter);
     return (
       <div>
         <AppHeader done={ countDone } todo={ countTodo }/>
         <header className="header">
-          <SearchPanel onFilter={ this.onFilter } />
-          <Filters setFilter={ setFilter } onTab={ this.onTabChange }/>
+          <SearchPanel updateTerm={ this.updateTerm } />
+					<Filters 
+					setFilter={ setFilter } 
+					onToggleTab={ this.onToggleTab }/>
         </header>
 				<TodoList 
-				todos={todoData} 
+				todos={ dataAfterSearchAndFilter } 
 				onRemoved={ this.removeItem } 
 				onToggleDone={ this.onToggleDone } 
 				onToggleImportant={ this.onToggleImportant } />

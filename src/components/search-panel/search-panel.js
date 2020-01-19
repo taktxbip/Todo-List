@@ -7,12 +7,11 @@ export default class SearchPanel extends Component {
 		filterValue: ''
 	}
 
-
 	onFilterChange = (e) => {
 		this.setState({
 			filterValue: e.target.value
 		})
-		this.props.onFilter(e.target.value);
+		this.props.updateTerm(e.target.value);
 	}
 
 	render() {

@@ -3,17 +3,13 @@ import "./filters.css";
 
 export default class Filters extends Component {
   render() {
-    const { setFilter, onTab } = this.props;
+    const { setFilter, onToggleTab } = this.props;
 
     const setActiveTab = name => {
-      // console.log( setFilter );
-
-
-
       return (
         <button
           type="button"
-          // onClick= { onTab(name) }
+          onClick= { () => onToggleTab(name) }
           className={
             setFilter === name ? "btn btn-info" : "btn btn-outline-secondary"
           }>
@@ -25,7 +21,7 @@ export default class Filters extends Component {
     return (
       <div className="filters">
         {setActiveTab("All")}
-        {setActiveTab("Important")}
+        {setActiveTab("Active")}
         {setActiveTab("Done")}
       </div>
     );

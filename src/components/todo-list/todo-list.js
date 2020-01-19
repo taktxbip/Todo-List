@@ -10,7 +10,8 @@ const TodoList = ({ todos, onRemoved, onToggleDone, onToggleImportant }) => {
 
 			return (
 				<li key={id} className={ classNames }>
-					<TodoListItem {...itemProps} 
+					<TodoListItem 
+					{...itemProps} 
 					onRemoved = { () => onRemoved(id) }
 					onToggleDone = { () => onToggleDone(id) }
 					onToggleImportant = { () => onToggleImportant(id) }
